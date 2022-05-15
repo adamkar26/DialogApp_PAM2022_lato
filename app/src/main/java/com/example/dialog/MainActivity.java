@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    int poziom = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +27,57 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(view.getContext());
                 dialogBuilder.setTitle("Informacja");
                 dialogBuilder.setMessage("Witaj w aplikacji");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getBaseContext(), "Okienko zostalo zamkniete",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
+            }
+        });
+
+        //poziomy trudnosci
+        Button button1 = findViewById(R.id.button4);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final CharSequence[] pozycje = {"łatwy", "średni", "trudny"};
+                final int[] temp_poziom = new int[1];
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setCancelable(false);
+                builder.setTitle("Wybierz poziom trudności");
+                builder.setSingleChoiceItems(pozycje, poziom, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                       temp_poziom[0] = i;
+                    }
+                });
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        poziom = temp_poziom[0];
+                        Toast.makeText(getBaseContext(),"Wybrano poziom "+ pozycje[poziom],
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getBaseContext(), "Zrezygnowano ze zmiany poziomu",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
     }
